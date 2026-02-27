@@ -738,21 +738,21 @@ export const useAppStore = create<AppState>()(
       },
 
       generateMonthlyRentals: async () => {
+        // Refresh bills FIRST to avoid creating duplicates based on stale local state
+        await get().fetchBills()
+
         const { rentals, bills } = get()
         const currentDate = new Date()
-        const currentMonth = currentDate.getMonth()
-        const currentYear = currentDate.getFullYear()
+        const currentMonth = currentDate.getUTCMonth()
+        const currentYear = currentDate.getUTCFullYear()
 
         let createdAny = false
 
         for (const rental of rentals) {
-          // Check if there is a bill for this rental in the current month
-          const hasBillThisMonth = bills.some(b => {
+          // Check if there is already a bill for this rental in the current month
+          const hasBillThisMonth = (bills || []).some(b => {
             if (b.aluguel_id !== rental.id) return false
             const billDate = new Date(b.dueDate)
-            // Handle precise timezones by looking at the logical date components if needed
-            // But mapping ISO directly usually suffices for month/year checks
-            // Since dueDate from DB is string or Date, we instantiate new Date() for safety
             return billDate.getUTCMonth() === currentMonth && billDate.getUTCFullYear() === currentYear
           })
 
@@ -766,7 +766,9 @@ export const useAppStore = create<AppState>()(
               // Generate bill for this month
               try {
                 const billDueDate = new Date()
+                // IMPORTANT: Use UTC to avoid timezone shifts
                 billDueDate.setUTCFullYear(currentYear, currentMonth, rentalStartDay)
+                billDueDate.setUTCHours(12, 0, 0, 0) // Middle of the day for safety
 
                 await financeiroService.create({
                   id: '', // Will be generated

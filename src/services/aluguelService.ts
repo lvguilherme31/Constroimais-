@@ -56,23 +56,6 @@ export const aluguelService = {
 
         const item = data as any
 
-        // Integrate with Contas a Pagar
-        try {
-            await financeiroService.create({
-                id: '', // Will be generated
-                description: `Aluguel de Equipamento: ${aluguel.nome} (${aluguel.empresaNome || 'S/Empresa'})`,
-                amount: aluguel.valor,
-                dueDate: aluguel.dataVencimento,
-                status: 'pending',
-                origin: 'manual',
-                projectId: aluguel.obraId || undefined,
-                category: 'Aluguel de Equipamentos',
-                aluguel_id: item.id // Pass the rental ID to link it
-            } as any)
-        } catch (financeError) {
-            console.error('Error creating linked bill:', financeError)
-        }
-
         return {
             id: item.id,
             nome: item.nome,
