@@ -204,6 +204,7 @@ export function ObraFormDialog({
       return
     }
 
+    /* Removed strict CNPJ validation
     if (currentProject.cnpj && !validateCNPJ(currentProject.cnpj)) {
       setCnpjError('CNPJ inválido')
       toast({
@@ -213,6 +214,7 @@ export function ObraFormDialog({
       })
       return
     }
+    */
 
     setIsSubmitting(true)
     try {
@@ -302,18 +304,7 @@ export function ObraFormDialog({
   const handleCNPJChange = (value: string) => {
     const formatted = formatCNPJ(value)
     setCurrentProject({ ...currentProject, cnpj: formatted })
-
-    if (value.length === 0) {
-      setCnpjError(null)
-    } else if (value.length >= 14) {
-      if (!validateCNPJ(formatted)) {
-        setCnpjError('CNPJ inválido')
-      } else {
-        setCnpjError(null)
-      }
-    } else {
-      setCnpjError(null)
-    }
+    setCnpjError(null)
   }
 
   return (
@@ -406,17 +397,8 @@ export function ObraFormDialog({
                         value={currentProject.cnpj || ''}
                         maxLength={18}
                         onChange={(e) => handleCNPJChange(e.target.value)}
-                        className={cn(cnpjError && 'border-red-500 pr-10')}
                       />
-                      {cnpjError && (
-                        <div className="absolute right-3 top-2.5 text-red-500 pointer-events-none">
-                          <AlertTriangle className="h-5 w-5" />
-                        </div>
-                      )}
                     </div>
-                    {cnpjError && (
-                      <p className="text-xs text-red-500 mt-1">{cnpjError}</p>
-                    )}
                   </div>
 
                   <div className="grid gap-2">
