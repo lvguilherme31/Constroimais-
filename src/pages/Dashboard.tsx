@@ -17,31 +17,30 @@ import { format, addDays, isBefore, differenceInDays } from 'date-fns'
 import { useNavigate } from 'react-router-dom'
 import { Badge } from '@/components/ui/badge'
 import { cn, getAlertStatus } from '@/lib/utils'
+import { useEffect } from 'react'
 
 export default function Dashboard() {
-  const { projects, employees, bills, expiringDocuments, accommodations, rentals } = useAppStore()
+  const { projects, employees, bills, expiringDocuments, accommodations, rentals, fetchBills } = useAppStore()
   const navigate = useNavigate()
   const today = new Date()
+
+  // Refresh bills on Dashboard mount to ensure up-to-date values
+  useEffect(() => {
+    fetchBills()
+  }, [fetchBills])
 
   // KPI 1: Active Works
   const activeProjects = projects.filter((p) => p.status === 'ativa').length
 
-  // KPI 2: Team in Field (Updated to use 'ativo' status)
+  // KPI 2: Team in Field
   const activeEmployees = employees.filter((e) => e.status === 'ativo').length
 
   // KPI 3: Active Accommodations
   const activeAccommodations = accommodations.filter((a) => a.status === 'active').length
 
-
-
-  // KPI 3: Bills to Pay (Next 7 days)
-  const nextWeek = addDays(today, 7)
+  // KPI 4: All pending/overdue bills (total value to pay)
   const billsNextWeek = bills
-    .filter(
-      (b) =>
-        (b.status === 'pending' || b.status === 'overdue') &&
-        isBefore(new Date(b.dueDate), nextWeek),
-    )
+    .filter((b) => b.status === 'pending' || b.status === 'overdue')
     .reduce((acc, curr) => acc + curr.amount, 0)
 
   // Generate Alerts List
