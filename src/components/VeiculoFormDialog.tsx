@@ -22,7 +22,6 @@ import { useAppStore } from '@/stores/useAppStore'
 import { useToast } from '@/hooks/use-toast'
 import { Loader2 } from 'lucide-react'
 import { veiculosService } from '@/services/veiculosService'
-import { validateVehiclePlate } from '@/lib/utils'
 import { DocumentUploadCard } from './DocumentUploadCard'
 import { DatePicker } from './ui/date-picker'
 
@@ -93,15 +92,6 @@ export function VeiculoFormDialog({
       return
     }
 
-    if (!validateVehiclePlate(data.plate)) {
-      toast({
-        title: 'Placa Inválida',
-        description: 'A placa deve seguir o padrão Mercosul (ex: BRA1B23).',
-        variant: 'destructive',
-      })
-      return
-    }
-
     setIsSubmitting(true)
     try {
       let vehicleId = vehicleToEdit?.id
@@ -158,9 +148,6 @@ export function VeiculoFormDialog({
     }
   }
 
-  const isPlateValid = data.plate ? validateVehiclePlate(data.plate) : true
-  const showPlateError = !isPlateValid && data.plate && data.plate.length > 0
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto">
@@ -185,15 +172,9 @@ export function VeiculoFormDialog({
                     .slice(0, 7)
                   setData({ ...data, plate: val })
                 }}
-                placeholder="BRA1B23"
+                placeholder="Ex: BRA1B23 ou ABC1234"
                 maxLength={7}
-                className={showPlateError ? 'border-red-500' : ''}
               />
-              {showPlateError && (
-                <span className="text-xs text-red-500 block">
-                  Padrão Mercosul: LLLNLNN (ex: BRA1B23)
-                </span>
-              )}
             </div>
             <div className="space-y-2">
               <Label htmlFor="status">Status</Label>
