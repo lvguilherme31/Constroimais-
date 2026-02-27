@@ -879,7 +879,7 @@ export default function AlojamentoDetails() {
                       <div className="space-y-2">
                         <Label>Estado</Label>
                         <Select
-                          value={data.estado}
+                          value={data.estado || undefined}
                           onValueChange={(v) => setData({ ...data, estado: v })}
                         >
                           <SelectTrigger>

@@ -251,7 +251,7 @@ export function AluguelFormDialog({
                                 <div className="space-y-2">
                                     <Label htmlFor="empresaEstado">Estado</Label>
                                     <Select
-                                        value={data.empresaEstado || ''}
+                                        value={data.empresaEstado || undefined}
                                         onValueChange={(v) => setData({ ...data, empresaEstado: v })}
                                     >
                                         <SelectTrigger>

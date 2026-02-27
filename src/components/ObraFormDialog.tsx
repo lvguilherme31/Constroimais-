@@ -445,7 +445,7 @@ export function ObraFormDialog({
                     <div className="grid gap-2">
                       <Label>Estado</Label>
                       <Select
-                        value={currentProject.state}
+                        value={currentProject.state || undefined}
                         onValueChange={(v) =>
                           setCurrentProject({
                             ...currentProject,

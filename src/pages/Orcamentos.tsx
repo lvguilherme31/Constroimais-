@@ -658,7 +658,7 @@ export default function Orcamentos() {
                     <div className="md:col-span-1 space-y-2">
                       <Label>Estado</Label>
                       <Select
-                        value={currentBudget.state || ''}
+                        value={currentBudget.state || undefined}
                         onValueChange={(v) =>
                           setCurrentBudget({ ...currentBudget, state: v })
                         }

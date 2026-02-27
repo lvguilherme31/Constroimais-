@@ -419,7 +419,7 @@ export default function Prestadores() {
                             <div className="space-y-2">
                                 <Label htmlFor="estado">Estado (UF)</Label>
                                 <Select
-                                    value={formData.estado}
+                                    value={formData.estado || undefined}
                                     onValueChange={(value) => setFormData({ ...formData, estado: value })}
                                 >
                                     <SelectTrigger id="estado">

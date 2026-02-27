@@ -415,7 +415,7 @@ export function ColaboradorFormDialog({
                                                     </div>
                                                     <div className="space-y-2">
                                                         <Label className="text-slate-600 font-medium">UF</Label>
-                                                        <Select value={data.state || ''} onValueChange={(v) => setData({ ...data, state: v })}>
+                                                        <Select value={data.state || undefined} onValueChange={(v) => setData({ ...data, state: v })}>
                                                             <SelectTrigger className="bg-white border-slate-200">
                                                                 <SelectValue placeholder="UF" />
                                                             </SelectTrigger>
