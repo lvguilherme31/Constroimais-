@@ -358,7 +358,7 @@ export default function Configuracoes() {
                           </TableCell>
                         </TableRow>
                       )}
-                      {users.map((u) => (
+                      {users.filter((u) => u.role !== 'super_admin').map((u) => (
                         <TableRow key={u.id} className="hover:bg-muted/10 transition-colors">
                           <TableCell className="font-semibold py-4">{u.name}</TableCell>
                           <TableCell className="py-4 text-muted-foreground">{u.email}</TableCell>
