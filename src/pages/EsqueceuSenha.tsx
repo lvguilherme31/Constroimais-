@@ -17,7 +17,7 @@ export default function EsqueceuSenha() {
 
         try {
             const { error } = await supabase.auth.resetPasswordForEmail(email, {
-                redirectTo: `${window.location.origin}/reset-password`,
+                redirectTo: 'https://teste-controimais-livree.vercel.app/reset-password',
             });
 
             if (error) {
