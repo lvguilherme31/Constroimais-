@@ -314,7 +314,7 @@ export default function Login() {
 
       <div className="relative z-10 mt-8 text-center px-4">
         <p className="text-slate-500 text-xs font-medium">
-          © 2025 TOPAZIO Empreendimentos. Todos os direitos reservados.
+          © 2026 TOPAZIO Empreendimentos. Todos os direitos reservados.
         </p>
       </div>
     </div>
