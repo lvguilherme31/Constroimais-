@@ -104,10 +104,10 @@ export const usersService = {
     },
 
     async delete(id: string) {
-        const { error } = await supabase
-            .from('usuarios')
-            .delete()
-            .eq('id', id)
+        // Call Edge Function to delete from both auth.users and public.usuarios
+        const { error } = await supabase.functions.invoke('delete-auth-user', {
+            body: { userId: id },
+        })
 
         if (error) throw error
     },
