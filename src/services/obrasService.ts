@@ -507,6 +507,10 @@ export const obrasService = {
         .from('contas_a_pagar')
         .update({ obra_id: null })
         .eq('obra_id', id),
+      supabase
+        .from('colaboradores')
+        .update({ producao_obra_id: null })
+        .eq('producao_obra_id', id),
     ])
 
     await supabase.from('documentos_obras').delete().eq('obra_id', id)
