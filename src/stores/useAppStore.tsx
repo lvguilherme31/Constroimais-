@@ -482,7 +482,27 @@ export const useAppStore = create<AppState>()(
           console.error('Error fetching expiring documents:', error)
           return
         }
-        set({ expiringDocuments: data || [] })
+
+        // Map view fields to the format expected by the Dashboard
+        const categoryMap: Record<string, string> = {
+          colaborador: 'Colaborador',
+          veiculo: 'Veículo',
+          obra: 'Obra',
+        }
+        const pathMap: Record<string, string> = {
+          colaborador: '/colaboradores',
+          veiculo: '/veiculos',
+          obra: '/obras',
+        }
+
+        const mapped = (data || []).map((doc: any) => ({
+          ...doc,
+          category: categoryMap[doc.tipo_entidade] ?? doc.tipo_entidade,
+          entityName: doc.entidade_nome,
+          path: pathMap[doc.tipo_entidade] ?? '/',
+        }))
+
+        set({ expiringDocuments: mapped })
       },
 
       fetchEmployeesPayments: async () => {
