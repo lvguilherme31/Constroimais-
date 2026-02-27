@@ -83,7 +83,9 @@ export default function AluguelEquipamentos() {
             const novoPago = !item.pago
             await updateRental(item.id, {
                 pago: novoPago,
-                dataPagamento: novoPago ? new Date() : null,
+                dataPagamento: novoPago
+                    ? new Date(new Date().toLocaleDateString('pt-BR', { year: 'numeric', month: '2-digit', day: '2-digit' }).split('/').reverse().join('-'))
+                    : null,
             })
             toast.success(novoPago ? 'Aluguel marcado como pago!' : 'Aluguel marcado como pendente')
         } catch (error) {
