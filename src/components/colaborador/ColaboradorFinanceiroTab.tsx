@@ -20,19 +20,68 @@ export function ColaboradorFinanceiroTab({
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="py-4">
-            <span className="text-sm font-medium text-muted-foreground block mb-1">
-              Salário Base
-            </span>
-            <span className="text-3xl font-bold text-foreground">
-              {employee.salary
-                ? employee.salary.toLocaleString('pt-BR', {
+          {employee.tipoRemuneracao === 'production' ? (
+            <div className="py-4 space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <span className="text-sm font-medium text-muted-foreground block mb-1">
+                    Tipo de Remuneração
+                  </span>
+                  <span className="text-lg font-semibold text-foreground">
+                    Por Produção
+                  </span>
+                </div>
+                <div>
+                  <span className="text-sm font-medium text-muted-foreground block mb-1">
+                    Valor Total a Receber
+                  </span>
+                  <span className="text-2xl font-bold text-emerald-600">
+                    {employee.producaoValorTotal
+                      ? employee.producaoValorTotal.toLocaleString('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL',
+                      })
+                      : 'R$ 0,00'}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-sm font-medium text-muted-foreground block mb-1">
+                    Quantidade/Unidades
+                  </span>
+                  <span className="text-lg font-semibold text-foreground">
+                    {employee.producaoQuantidade || 0}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-sm font-medium text-muted-foreground block mb-1">
+                    Valor Unitário
+                  </span>
+                  <span className="text-lg font-semibold text-foreground">
+                    {employee.producaoValorUnitario
+                      ? employee.producaoValorUnitario.toLocaleString('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL',
+                      })
+                      : 'R$ 0,00'}
+                  </span>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="py-4">
+              <span className="text-sm font-medium text-muted-foreground block mb-1">
+                Salário Base
+              </span>
+              <span className="text-3xl font-bold text-foreground">
+                {employee.salary
+                  ? employee.salary.toLocaleString('pt-BR', {
                     style: 'currency',
                     currency: 'BRL',
                   })
-                : 'R$ 0,00'}
-            </span>
-          </div>
+                  : 'R$ 0,00'}
+              </span>
+            </div>
+          )}
         </CardContent>
       </Card>
 
