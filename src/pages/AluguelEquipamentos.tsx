@@ -139,6 +139,7 @@ export default function AluguelEquipamentos() {
                             <TableHead>Equipamento</TableHead>
                             <TableHead>Valor</TableHead>
                             <TableHead>Vencimento</TableHead>
+                            <TableHead>Status</TableHead>
                             <TableHead>Obra</TableHead>
                             <TableHead>Empresa Locadora</TableHead>
                             <TableHead className="text-right">Ações</TableHead>
@@ -191,6 +192,35 @@ export default function AluguelEquipamentos() {
                                                     )
                                                 })()}
                                             </div>
+                                        </TableCell>
+                                        {/* STATUS CELL */}
+                                        <TableCell>
+                                            {item.pago ? (
+                                                <div className="flex flex-col gap-0.5">
+                                                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-green-50 text-green-700 border border-green-200 w-fit">
+                                                        <CheckCircle2 className="h-3 w-3" /> Pago
+                                                    </span>
+                                                    {item.dataPagamento && (
+                                                        <span className="text-[10px] text-muted-foreground pl-0.5">
+                                                            {format(item.dataPagamento, 'dd/MM/yyyy', { locale: ptBR })}
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            ) : (() => {
+                                                const s = getAlertStatus(item.dataVencimento)
+                                                if (s.severity === 'expired') {
+                                                    return (
+                                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-red-50 text-red-700 border border-red-200 w-fit">
+                                                            Vencido
+                                                        </span>
+                                                    )
+                                                }
+                                                return (
+                                                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-gray-50 text-gray-600 border border-gray-200 w-fit">
+                                                        Pendente
+                                                    </span>
+                                                )
+                                            })()}
                                         </TableCell>
                                         <TableCell>
                                             {obra ? (
