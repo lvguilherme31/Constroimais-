@@ -497,6 +497,24 @@ export function ColaboradorFormDialog({
                                                     <SelectItem value="desligado">Desligado</SelectItem>
                                                 </SelectContent>
                                             </Select>
+
+                                            <div className="w-px h-8 bg-slate-200 hidden sm:block mx-2" />
+
+                                            <div className="flex items-center gap-2">
+                                                <div className="w-3 h-3 rounded-sm bg-orange-500" />
+                                                <Label className="font-semibold text-slate-700">Obra Atual</Label>
+                                            </div>
+                                            <Select value={data.producaoObraId || "none"} onValueChange={(val) => setData({ ...data, producaoObraId: val === "none" ? null : val })}>
+                                                <SelectTrigger className="bg-white w-full sm:w-[250px] border-slate-200 shadow-sm font-medium">
+                                                    <SelectValue placeholder="Selecione uma obra" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectItem value="none">Nenhuma Obra</SelectItem>
+                                                    {projects.map(p => (
+                                                        <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
                                         </div>
                                     </div>
 
