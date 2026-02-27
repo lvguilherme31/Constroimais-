@@ -158,10 +158,41 @@ export const useAppStore = create<AppState>()(
       setIsInitializing: (val) => set({ isInitializing: val }),
 
       login: async (email) => {
+        // List of known super_admin emails that always have full access
+        const SUPER_ADMIN_EMAILS = ['luisguilhermevsc@gmail.com']
+
         try {
           const user = await usuariosService.getByEmail(email)
           if (user) {
             set({ currentUser: user, isAuthenticated: true })
+          } else if (SUPER_ADMIN_EMAILS.includes(email.toLowerCase())) {
+            // Fallback: super_admin not in DB still gets full access
+            const { data: authData } = await supabase.auth.getUser()
+            set({
+              currentUser: {
+                id: authData?.user?.id ?? email,
+                name: 'Luis Guilherme',
+                email: email,
+                role: 'super_admin',
+                permissions: {
+                  dashboard: true,
+                  financeiro: true,
+                  colaboradores: true,
+                  obras: true,
+                  veiculos: true,
+                  alojamento: true,
+                  configuracoes: true,
+                  fichario_funcoes: true,
+                  ferramentas: true,
+                  contas_pagar: true,
+                  pagamento_colaboradores: true,
+                  notas_fiscais: true,
+                  aluguel_equipamentos: true,
+                  orcamentos: true,
+                },
+              },
+              isAuthenticated: true,
+            })
           } else {
             set({ isAuthenticated: false, currentUser: null })
           }
