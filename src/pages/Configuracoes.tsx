@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { formatCNPJ } from '@/lib/utils'
 import { useAppStore } from '@/stores/useAppStore'
 import { User, Role } from '@/types'
+import { supabase } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -159,18 +160,40 @@ export default function Configuracoes() {
     toast({ title: 'Perfil Atualizado' })
   }
 
-  const handleChangePassword = () => {
-    if (pass.new !== pass.confirm) {
-      toast({
-        title: 'Erro',
-        description: 'Senhas não conferem',
-        variant: 'destructive',
-      })
+  const handleChangePassword = async () => {
+    if (!pass.current || !pass.new || !pass.confirm) {
+      toast({ title: 'Erro', description: 'Preencha todos os campos de senha.', variant: 'destructive' })
       return
     }
-    // Logic to verify current password would go here
-    toast({ title: 'Sucesso', description: 'Senha alterada com sucesso.' })
-    setPass({ current: '', new: '', confirm: '' })
+    if (pass.new !== pass.confirm) {
+      toast({ title: 'Erro', description: 'Senhas não conferem.', variant: 'destructive' })
+      return
+    }
+    if (pass.new.length < 6) {
+      toast({ title: 'Erro', description: 'A nova senha deve ter pelo menos 6 caracteres.', variant: 'destructive' })
+      return
+    }
+
+    try {
+      // 1. Validate current password
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: currentUser?.email ?? '',
+        password: pass.current,
+      })
+      if (signInError) {
+        toast({ title: 'Senha atual incorreta', description: 'Verifique sua senha atual e tente novamente.', variant: 'destructive' })
+        return
+      }
+
+      // 2. Update password in Supabase Auth
+      const { error: updateError } = await supabase.auth.updateUser({ password: pass.new })
+      if (updateError) throw updateError
+
+      toast({ title: 'Senha Atualizada', description: 'Sua senha foi alterada com sucesso no sistema.' })
+      setPass({ current: '', new: '', confirm: '' })
+    } catch (error: any) {
+      toast({ title: 'Erro', description: error.message || 'Falha ao alterar a senha.', variant: 'destructive' })
+    }
   }
 
   const togglePermission = (key: keyof User['permissions']) => {
