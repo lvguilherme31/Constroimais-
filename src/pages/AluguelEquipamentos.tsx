@@ -84,7 +84,7 @@ export default function AluguelEquipamentos() {
             await updateRental(item.id, {
                 pago: novoPago,
                 dataPagamento: novoPago
-                    ? new Date(new Date().toLocaleDateString('pt-BR', { year: 'numeric', month: '2-digit', day: '2-digit' }).split('/').reverse().join('-'))
+                    ? new Date().toLocaleDateString('sv-SE') // 'sv-SE' always returns YYYY-MM-DD in local time
                     : null,
             })
             toast.success(novoPago ? 'Aluguel marcado como pago!' : 'Aluguel marcado como pendente')
@@ -204,7 +204,7 @@ export default function AluguelEquipamentos() {
                                                     </span>
                                                     {item.dataPagamento && (
                                                         <span className="text-[10px] text-muted-foreground pl-0.5">
-                                                            {format(item.dataPagamento, 'dd/MM/yyyy', { locale: ptBR })}
+                                                            {item.dataPagamento.split('-').reverse().join('/')}
                                                         </span>
                                                     )}
                                                 </div>
