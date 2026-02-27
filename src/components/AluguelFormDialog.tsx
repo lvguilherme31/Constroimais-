@@ -23,7 +23,7 @@ import { AluguelEquipamento } from '@/types'
 import { aluguelService } from '@/services/aluguelService'
 import { toast } from 'sonner'
 import { format } from 'date-fns'
-import { cn, getAlertStatus } from '@/lib/utils'
+import { cn, getAlertStatus, formatCNPJ } from '@/lib/utils'
 
 interface AluguelFormDialogProps {
     open: boolean
@@ -215,13 +215,7 @@ export function AluguelFormDialog({
                                         id="empresaCnpj"
                                         value={data.empresaCnpj || ''}
                                         onChange={(e) => {
-                                            const val = e.target.value.replace(/\D/g, '').slice(0, 14)
-                                            let masked = val
-                                            if (val.length > 12) masked = val.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2}).*/, '$1.$2.$3/$4-$5')
-                                            else if (val.length > 8) masked = val.replace(/^(\d{2})(\d{3})(\d{3})(\d{1,4}).*/, '$1.$2.$3/$4')
-                                            else if (val.length > 5) masked = val.replace(/^(\d{2})(\d{3})(\d{1,3}).*/, '$1.$2.$3')
-                                            else if (val.length > 2) masked = val.replace(/^(\d{2})(\d{1,3}).*/, '$1.$2')
-                                            setData({ ...data, empresaCnpj: masked })
+                                            setData({ ...data, empresaCnpj: formatCNPJ(e.target.value) })
                                         }}
                                         placeholder="00.000.000/0000-00"
                                     />

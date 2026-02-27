@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { formatCNPJ } from '@/lib/utils'
 import { useAppStore } from '@/stores/useAppStore'
 import { User, Role } from '@/types'
 import { Button } from '@/components/ui/button'
@@ -411,7 +412,7 @@ export default function Configuracoes() {
                   <Input
                     className="h-11"
                     value={profile.cnpj}
-                    onChange={(e) => setProfile({ ...profile, cnpj: e.target.value })}
+                    onChange={(e) => setProfile({ ...profile, cnpj: formatCNPJ(e.target.value) })}
                   />
                 </div>
               </div>

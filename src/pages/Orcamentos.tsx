@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { formatCNPJ } from '@/lib/utils'
 import { useAppStore } from '@/stores/useAppStore'
 import { Budget } from '@/types'
 import { Button } from '@/components/ui/button'
@@ -570,7 +571,7 @@ export default function Orcamentos() {
                       onChange={(e) =>
                         setCurrentBudget({
                           ...currentBudget,
-                          cnpj: e.target.value || null,
+                          cnpj: formatCNPJ(e.target.value) || null,
                         })
                       }
                       placeholder="00.000.000/0000-00"

@@ -31,7 +31,7 @@ import {
 import { format } from 'date-fns'
 import { Badge } from '@/components/ui/badge'
 import { useToast } from '@/hooks/use-toast'
-import { getAlertStatus, cn } from '@/lib/utils'
+import { getAlertStatus, cn, formatCNPJ } from '@/lib/utils'
 import {
   Select,
   SelectContent,
@@ -454,7 +454,7 @@ export default function NotasFiscais() {
               <Input
                 value={currentInvoice.cnpj || ''}
                 onChange={(e) =>
-                  setCurrentInvoice({ ...currentInvoice, cnpj: e.target.value })
+                  setCurrentInvoice({ ...currentInvoice, cnpj: formatCNPJ(e.target.value) })
                 }
               />
             </div>
@@ -485,7 +485,7 @@ export default function NotasFiscais() {
                     onChange={(e) =>
                       setCurrentInvoice({
                         ...currentInvoice,
-                        emitterCnpj: e.target.value,
+                        emitterCnpj: formatCNPJ(e.target.value),
                       })
                     }
                     placeholder="00.000.000/0000-00"
