@@ -49,6 +49,7 @@ const DOC_TYPES = [
     { id: 'nr18', label: 'NR 18 - Construção Civil' },
     { id: 'nr35', label: 'NR 35 - Altura' },
     { id: 'os', label: 'Ordem de Serviço (OS)' },
+    { id: 'outros', label: 'Outros' },
 ]
 
 const INITIAL_DATA: Partial<Employee> = {
@@ -768,13 +769,22 @@ export function ColaboradorFormDialog({
                                                         <div key={id} className="flex flex-col gap-4 p-4 border rounded-lg bg-white hover:bg-slate-50 transition-colors">
                                                             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                                                                 <div className="flex-1 w-full md:max-w-[250px]">
-                                                                    <Label className="text-[10px] text-slate-400 font-bold uppercase mb-1 block">Nome do Documento</Label>
-                                                                    <Input
-                                                                        placeholder="Ex: Certificado, Treinamento..."
+                                                                    <Label className="text-[10px] text-slate-400 font-bold uppercase mb-1 block">Tipo do Documento</Label>
+                                                                    <Select
                                                                         value={docUploads[id]?.customLabel ?? (existingDoc?.type || '')}
-                                                                        onChange={(e) => handleCustomLabelChange(id, e.target.value)}
-                                                                        className="h-9 font-semibold"
-                                                                    />
+                                                                        onValueChange={(v) => handleCustomLabelChange(id, v)}
+                                                                    >
+                                                                        <SelectTrigger className="h-9 font-semibold">
+                                                                            <SelectValue placeholder="Selecione o tipo..." />
+                                                                        </SelectTrigger>
+                                                                        <SelectContent>
+                                                                            {DOC_TYPES.map((dt) => (
+                                                                                <SelectItem key={dt.id} value={dt.id}>
+                                                                                    {dt.label}
+                                                                                </SelectItem>
+                                                                            ))}
+                                                                        </SelectContent>
+                                                                    </Select>
                                                                 </div>
 
                                                                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 flex-1 justify-end">
