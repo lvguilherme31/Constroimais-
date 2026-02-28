@@ -103,7 +103,7 @@ interface AppState {
   deleteBudgetAttachment: (id: string) => Promise<void>
 
   fetchAccommodations: () => Promise<void>
-  addAccommodation: (accommodation: Accommodation) => Promise<void>
+  addAccommodation: (accommodation: Accommodation) => Promise<Accommodation>
   updateAccommodation: (id: string, updates: Partial<Accommodation>) => Promise<void>
   deleteAccommodation: (id: string) => Promise<void>
 
@@ -417,8 +417,9 @@ export const useAppStore = create<AppState>()(
       },
 
       addAccommodation: async (accommodation) => {
-        await acomodacaoService.create(accommodation)
+        const newAcc = await acomodacaoService.create(accommodation)
         await get().fetchAccommodations()
+        return newAcc
       },
 
       updateAccommodation: async (id, updates) => {

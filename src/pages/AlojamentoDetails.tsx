@@ -254,9 +254,8 @@ export default function AlojamentoDetails() {
           documentName: undefined,
           _tempDate: undefined,
         }))
-        const newAcc = await alojamentosService.create({ ...finalData, utilities: sanitizedUtilities } as Accommodation)
+        const newAcc = await addAccommodation({ ...finalData, utilities: sanitizedUtilities } as Accommodation)
         savedId = newAcc.id
-        addAccommodation(newAcc) // update store
         currentAccommodation = newAcc
         toast({
           title: 'Criado',
@@ -275,8 +274,7 @@ export default function AlojamentoDetails() {
           _tempDate: undefined,
         }))
         const savePayload = { ...finalData, utilities: sanitizedUtilities }
-        await alojamentosService.update(id!, savePayload)
-        updateAccommodation(id!, savePayload)
+        await updateAccommodation(id!, savePayload)
       }
 
       // Handle docs

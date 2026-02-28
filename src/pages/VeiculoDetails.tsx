@@ -94,12 +94,10 @@ export default function VeiculoDetails() {
 
       // 1. Create or Update Vehicle Record
       if (isNew) {
-        const newVehicle = await veiculosService.create(data as Vehicle)
+        const newVehicle = await addVehicle(data as Vehicle)
         savedId = newVehicle.id
-        addVehicle(newVehicle)
       } else {
-        await veiculosService.update(savedId, data)
-        updateVehicle(savedId, data)
+        await updateVehicle(savedId, data)
       }
 
       // 2. Handle Documents (Upload or Metadata Update)
@@ -139,7 +137,7 @@ export default function VeiculoDetails() {
       const refreshed = await veiculosService.getById(savedId)
       if (refreshed) {
         setData(refreshed)
-        updateVehicle(savedId, refreshed)
+        // updateVehicle is not needed here as it simply triggers the store to update which has already received the newest copy via fetchVehicles called in the store's updateVehicle / addVehicle or it simply calls veiculoService again! Wait, the store's updateVehicle does `await veiculoService.update(id, updates); await fetchVehicles()`. So we don't need to call updateVehicle here again for refreshed! Let's just remove it.
 
         // Sync local date state with refreshed data
         const initialDates: Record<string, Date | undefined> = {}

@@ -97,8 +97,7 @@ export function VeiculoFormDialog({
       let vehicleId = vehicleToEdit?.id
 
       if (vehicleToEdit && vehicleToEdit.id) {
-        await veiculosService.update(vehicleToEdit.id, data)
-        updateVehicle(vehicleToEdit.id, data)
+        await updateVehicle(vehicleToEdit.id, data)
         toast({
           title: 'Veículo Atualizado',
           description: 'As informações do veículo foram salvas com sucesso.',
